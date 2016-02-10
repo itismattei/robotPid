@@ -70,33 +70,33 @@ int main(void) {
 	//-------------------------//
 
 	//volatile double d = 1.9845637456;
-	gyro G;
-	accelerazione A;
-	cinematica CIN;
+	//gyro G;
+	//accelerazione A;
+	//cinematica CIN;
 	/// servono differenti PID, almeno uno per la rotazione ed uno per lo spostamento
 	/// per la rotazione sarebbero interessante usarne 2, uno per la ortazione soft ed uno per la rotazione
 	/// brusca.
-	pid CTRL[3], * pidPtr;
+	//pid CTRL[3], * pidPtr;
 	/// descrittore della sintassi dei comandi
 	syn_stat synSTATO;
 	/// modulo zigbee per telemetria
-	xbee XB;
+	//xbee XB;
 	/// pwm servi e motori
-	pwm PWM, pwmServi;
+	//pwm PWM, pwmServi;
 	/// struttura del sensore di colore
-	colore COL;
+	//colore COL;
 	/// sensore di temperatura ad infrarossi
-	temperatura TEMP;
-	TEMPER sensIR;
+	//temperatura TEMP;
+	//TEMPER sensIR;
 	/// indormazioni sul sopravvissuto
-	survivor SUR;
+	//survivor SUR;
 	//inizializzazione struttura per qei
-	qei QEI;
+	//qei QEI;
 	/// oggetto che riallinea il mezzo
-	allineamento AL;
+	//allineamento AL;
 
 	/// disabilita le interruzioni
-	DI();
+	/*DI();
 	pidPtr = CTRL;
 	dPtr = &DIST;
 	TEMPptr =  &TEMP;
@@ -110,27 +110,27 @@ int main(void) {
 	dati_a_struttura(&G, &DIST, &CIN, &COL, &TEMP, &SUR, &DATA);
 
 	/// commento per provare il merge su server remoto
-
+*/
 	/// setup di base
 	setupMCU();
 	/// imposta i parametri del PID
-	setupPID(CTRL);
+	//setupPID(CTRL);
 	/// imposta le UART
 	setupUART();
     //inizializzo l'i2c
-	InitI2C0();
+	//InitI2C0();
 	/// messaggio d'inizio
 	PRINT_WELCOME();
 	/// inizializza il giroscopio
-	initGyro(&G, Z_AXIS);
+	//initGyro(&G, Z_AXIS);
 	/// inizializza il timer 0 e genera un tick da 10 ms
-	initTimer0(10, &G);
+	//initTimer0(10, &G);
 	/// inizializza il timer 1
 	initTimer1(100);
 	/// inizializza il contatore della persistenza del comando
 	synSTATO.tick = 0;
 	/// inizializza il pwm
-	pwmMotInit(&PWM);
+	//pwmMotInit(&PWM);
 	// TODO: //pwmServoInit (&pwmServi);
 	/// inizializza l'adc e lo prepara a funzionare ad interruzioni.
 	initAdc(&DIST);
@@ -140,37 +140,37 @@ int main(void) {
 	//servo = (pwm *) &pwmServi;
 
 	/// iniziailizzazione del lettore encoder
-	qei_init(&QEI);
+	//qei_init(&QEI);
 
 	/// abilita le interruzioni
 	EI();
 	/// attende che il sensore vada a regime
-	if (G.IsPresent == OK){
-		PRINTF("\nAzzeramento assi giroscopio\n");
-		while (blink < 70){
-			if (procCom == 1){
-				procCom = 0;
-				blink++;
-			}
-		}
-		blink = 0;
-		/// azzeramento degli assi
-		azzeraAssi(&G);
-	}
+//	if (G.IsPresent == OK){
+//		PRINTF("\nAzzeramento assi giroscopio\n");
+//		while (blink < 70){
+//			if (procCom == 1){
+//				procCom = 0;
+//				blink++;
+//			}
+//		}
+//		blink = 0;
+//		/// azzeramento degli assi
+//		azzeraAssi(&G);
+//	}
 
 	/// test della presenza del modulo zig-bee
 	/// il modulo zig-be si attiva con al sequnza '+++' e risponde con 'OK' (maiuscolo)
-	if (testXbee() == 0){
-		// ok;
-		XB.present = 1;
-		PRINTF("Modulo xbee presente.\n");
-	}
-	else{
-		XB.present = 0;
-		PRINTF("Modulo xbee non presente.\n");
-	}
-
-	pwm_power(&PWM);
+//	if (testXbee() == 0){
+//		// ok;
+//		XB.present = 1;
+//		PRINTF("Modulo xbee presente.\n");
+//	}
+//	else{
+//		XB.present = 0;
+//		PRINTF("Modulo xbee non presente.\n");
+//	}
+//
+//	pwm_power(&PWM);
 	contatore = 0;
 
 	//// inizializza l'accelrometro
@@ -178,55 +178,55 @@ int main(void) {
 	// scrivo nel registro 0x20 il valore 0x0F, cioe' banda minima, modulo on e assi on
 	/// sintassi: indirizzo slave, num parm, indirizzo reg, valore da scrivere
 	//I2CSend(ACCEL_ADDR, 2, CTRL_REG1_A, ODR1 + ODR0 + ZaxEN + YaxEN + XaxEN);
-	A.isPresent = testAccel();
-	if (A.isPresent)
-		impostaAccel(&A);
-
-	/// taratura sul sensore di luminosita'
-	whiteBal(&COL);
-	/// taratura del sensore di temepratura
-	taraturaTemp(&TEMP);
-
-	///
-	qei_test(&QEI);
+//	A.isPresent = testAccel();
+//	if (A.isPresent)
+//		impostaAccel(&A);
+//
+//	/// taratura sul sensore di luminosita'
+//	whiteBal(&COL);
+//	/// taratura del sensore di temepratura
+//	taraturaTemp(&TEMP);
+//
+//	///
+//	qei_test(&QEI);
 	/// task principale
 	while(1){
 
 		/// invia la risposta per i comandi di rotazione, quando sono stati eseguiti
-		if(pidPtr->rispondi == TRUE){
-			rispostaRotazione(pidPtr, &synSTATO);
-			pidPtr->rispondi = FALSE;
-		}
-
-		if (procCom == 1 ){
-			//UARTCharPutNonBlocking(UART1_BASE, 'c');
-			procCom = 0;
-			contatore++;
-			lampeggio_led++;
-
-
-			if(lampeggio_led >= 50)
-			{
-				lampeggio_led = 0;
-
-				 if(DATA.surPtr->isSurvivor == TRUE )
-				{
-					if(HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED << 2))) != GREEN_LED )
-						HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (RED_LED << 2))) = 0;
-
-					HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED | RED_LED << 2))) ^=  GREEN_LED | RED_LED;
-
-
-				}
-
-				HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED << 2))) ^=  GREEN_LED;
-			}
-
-
-			/*  LETTURA DEL COMANDO */
-
-			/// restituisce l'indirizzo del PID da utilizzare nel successivo processo di calcolo
-			pidPtr =  leggiComando(&synSTATO, CTRL, pidPtr, &DATA);
+//		if(pidPtr->rispondi == TRUE){
+//			rispostaRotazione(pidPtr, &synSTATO);
+//			pidPtr->rispondi = FALSE;
+//		}
+//
+//		if (procCom == 1 ){
+//			//UARTCharPutNonBlocking(UART1_BASE, 'c');
+//			procCom = 0;
+//			contatore++;
+//			lampeggio_led++;
+//
+//
+//			if(lampeggio_led >= 50)
+//			{
+//				lampeggio_led = 0;
+//
+//				 if(DATA.surPtr->isSurvivor == TRUE )
+//				{
+//					if(HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED << 2))) != GREEN_LED )
+//						HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (RED_LED << 2))) = 0;
+//
+//					HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED | RED_LED << 2))) ^=  GREEN_LED | RED_LED;
+//
+//
+//				}
+//
+//				HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GREEN_LED << 2))) ^=  GREEN_LED;
+//			}
+//
+//
+//			/*  LETTURA DEL COMANDO */
+//
+//			/// restituisce l'indirizzo del PID da utilizzare nel successivo processo di calcolo
+//			pidPtr =  leggiComando(&synSTATO, CTRL, pidPtr, &DATA);
 
 			/* LETTURA SENSORI  */
 
@@ -242,8 +242,8 @@ int main(void) {
 				ROM_ADCProcessorTrigger(ADC0_BASE, 0);
 
 			/// misura i dati forniti dall'accelerometro se disponibili
-			if(A.isPresent)
-				misuraAccelerazioni(&A);
+//			if(A.isPresent)
+//				misuraAccelerazioni(&A);
 			/// le misure del giroscopio invece sono effettuate solo dall'apposito pid
 
 			/*if(G.IsPresent == OK)
@@ -271,8 +271,8 @@ int main(void) {
 			}*/
 
 			/* RISPOSTA AL COMANDO */
-			inviaSensore(&synSTATO, &DATA);
+			//inviaSensore(&synSTATO, &DATA);
 
-		}
+		//}
 	}
 }
