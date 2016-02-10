@@ -12,6 +12,7 @@
  *  VERSIONE COMPLETA DI TEST: prove sui componenti in modalita' completa
  *  VERSIONE IN C++
  *  Ripresa dalla release precedente
+ *  alcune prove
  */
 
 
