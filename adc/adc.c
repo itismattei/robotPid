@@ -46,9 +46,10 @@ void initAdc(volatile distanza *d){
 
 ///
 /// estrae i dati  dopo la lettura dei 5 sensori
-int32_t ADCSequenceData_Get(uint32_t ui32Base, uint32_t ui32SequenceNum, uint32_t *pui32Buffer){
+int32_t ADCSequenceData_Get(uint32_t ui32Base, uint32_t ui32SequenceNum, uint32_t pADCBuffer[]){
 
     uint32_t ui32Count;
+    uint32_t risultato[5];
 
     //
     // Check the arguments.
@@ -64,15 +65,21 @@ int32_t ADCSequenceData_Get(uint32_t ui32Base, uint32_t ui32SequenceNum, uint32_
     //
     // Read samples from the FIFO until it is empty.
     //
+    volatile int i = 0;
     ui32Count = 0;
     while(!(HWREG(ui32Base + ADC_SSFSTAT) & ADC_SSFSTAT0_EMPTY) &&
           (ui32Count < 10))
     {
+
         //
         // Read the FIFO and copy it to the destination.
         //
-        *pui32Buffer++ = HWREG(ui32Base + ADC_SSFIFO);
-
+        *pADCBuffer++ = HWREG(ui32Base + ADC_SSFIFO);
+    	//pADCBuffer[i]  = HWREG(ui32Base + ADC_SSFIFO) & 0xFFF;
+    	//pADCBuffer++;
+    	//pADCBuffer[i] = 5 + i;
+    	//risultato[i] = HWREG(ui32Base + ADC_SSFIFO) & 0xFFF;
+    	//i++;
         //
         // Increment the count of samples read.
         //
@@ -86,7 +93,7 @@ int32_t ADCSequenceData_Get(uint32_t ui32Base, uint32_t ui32SequenceNum, uint32_
 }
 
 
-extern distanza *dPtr;
+extern  distanza *dPtr;
 volatile uint32_t numByte;
 
 void adcISR(void){

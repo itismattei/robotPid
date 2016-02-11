@@ -56,6 +56,8 @@ extern void UART1IntHandler(void);
 extern void IntGPIOd(void);
 extern void Timer1ISR(void);
 extern void Timer4ISR(void);
+/// gestisce l'adc sul sequencer 0
+extern void adcISR(void);
 
 //*****************************************************************************
 //
@@ -105,7 +107,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // PWM Generator 1
     IntDefaultHandler,                      // PWM Generator 2
     IntDefaultHandler,                      // Quadrature Encoder 0
-    IntDefaultHandler,                      // ADC Sequence 0
+    adcISR,                      // ADC Sequence 0
     IntDefaultHandler,                      // ADC Sequence 1
     IntDefaultHandler,                      // ADC Sequence 2
     IntDefaultHandler,                      // ADC Sequence 3
