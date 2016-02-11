@@ -49,7 +49,6 @@ void initAdc(volatile distanza *d){
 int32_t ADCSequenceData_Get(uint32_t ui32Base, uint32_t ui32SequenceNum, uint32_t pADCBuffer[]){
 
     uint32_t ui32Count;
-    uint32_t risultato[5];
 
     //
     // Check the arguments.
@@ -111,7 +110,6 @@ void adcISR(void){
 	///riutilizzo della variabile attesa per stampare a video i dati provenienti dal buffer dell'adc
 	for(attesa= 0; attesa < 5; attesa++)
 		PRINTF("val: %d \t", dPtr->dI[attesa]);
-
 	PRINTF("\n");
 }
 

@@ -51,7 +51,7 @@
 #include "allineamento/allineamento.h"
 
 /// variabili globali
-volatile int procCom = 0;
+volatile int procCom = 0, tick;
 volatile int procCom4 = 0;
 extern volatile uint8_t uart1buffer[16], RX_PTR1, READ_PTR1;
 volatile distanza *dPtr;
@@ -70,7 +70,7 @@ int main(void) {
 	//-------------------------//
 
 	//volatile double d = 1.9845637456;
-	//gyro G;
+	gyro G;
 	//accelerazione A;
 	//cinematica CIN;
 	/// servono differenti PID, almeno uno per la rotazione ed uno per lo spostamento
@@ -123,10 +123,11 @@ int main(void) {
 	PRINT_WELCOME();
 	/// inizializza il giroscopio
 	//initGyro(&G, Z_AXIS);
+	tick = 0;
 	/// inizializza il timer 0 e genera un tick da 10 ms
-	//initTimer0(10, &G);
+	initTimer0(10, &G);
 	/// inizializza il timer 1
-	initTimer1(100);
+	//initTimer1(100);
 	/// inizializza il contatore della persistenza del comando
 	synSTATO.tick = 0;
 	/// inizializza il pwm
@@ -237,9 +238,12 @@ int main(void) {
 
 			/* misura gli encoder e calcola spostameti e velocità */
 			/* misura i sensori di distanza */
-			if (DIST.run == true)
+			if (tick >= 100){
 				/// TODO controllare se riesce a funzionare mentre legge le accelerazioni su I2C
 				ROM_ADCProcessorTrigger(ADC0_BASE, 0);
+				tick = 0;
+				HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + (GPIO_PIN_3 << 2))) ^=  GPIO_PIN_3;
+			}
 
 			/// misura i dati forniti dall'accelerometro se disponibili
 //			if(A.isPresent)
