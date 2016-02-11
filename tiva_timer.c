@@ -21,7 +21,7 @@
 #include "sens_col_ir/sens.h"
 
 
-extern volatile int procCom;
+extern volatile int procCom, tick;
 extern pwm *servo;
 extern temperatura * TEMPptr;
 
@@ -42,6 +42,7 @@ void Timer0ISR(void){
     //PIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, GPIO_PIN_2);
 
     procCom = 1;
+    tick++;
     //
     // Use the flags to Toggle the LED for this timer
     //
