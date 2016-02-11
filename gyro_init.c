@@ -218,7 +218,7 @@ void setupUART(void){
 void PRINT_WELCOME(void){
 	int i, valore;
 	for(i = 0; i < 10000; i++);
-	PRINTF("Modulo robotico");
+	PRINTF("Modulo robotico\n");
 	for(i = 0; i < 10000; i++);
 	PRINTF("Lettura dal clock\n");
 	valore = SysCtlClockGet();
