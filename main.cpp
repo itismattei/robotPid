@@ -96,10 +96,10 @@ int main(void) {
 	//allineamento AL;
 
 	/// disabilita le interruzioni
-	/*DI();
-	pidPtr = CTRL;
+	DI();
+	//pidPtr = CTRL;
 	dPtr = &DIST;
-	TEMPptr =  &TEMP;
+	/*TEMPptr =  &TEMP;
 	CIN.Aptr = &A;
 	CIN.distPTR = &DIST;
 	CIN.vel = 0.0;
