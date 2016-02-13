@@ -12,7 +12,7 @@
  *  VERSIONE COMPLETA DI TEST: prove sui componenti in modalita' completa
  *  VERSIONE IN C++
  *  Ripresa dalla release precedente
- *  alcune prove
+ *  versione con varie prove
  */
 
 
@@ -71,35 +71,35 @@ int main(void) {
 
 	//volatile double d = 1.9845637456;
 	gyro G;
-	//accelerazione A;
-	//cinematica CIN;
+	accelerazione A;
+	cinematica CIN;
 	/// servono differenti PID, almeno uno per la rotazione ed uno per lo spostamento
 	/// per la rotazione sarebbero interessante usarne 2, uno per la ortazione soft ed uno per la rotazione
 	/// brusca.
-	//pid CTRL[3], * pidPtr;
+	pid CTRL[3], * pidPtr;
 	/// descrittore della sintassi dei comandi
 	syn_stat synSTATO;
 	/// modulo zigbee per telemetria
-	//xbee XB;
+	xbee XB;
 	/// pwm servi e motori
-	//pwm PWM, pwmServi;
+	pwm PWM, pwmServi;
 	/// struttura del sensore di colore
-	//colore COL;
+	colore COL;
 	/// sensore di temperatura ad infrarossi
-	//temperatura TEMP;
-	//TEMPER sensIR;
+	temperatura TEMP;
+	TEMPER sensIR;
 	/// indormazioni sul sopravvissuto
-	//survivor SUR;
+	survivor SUR;
 	//inizializzazione struttura per qei
-	//qei QEI;
+	qei QEI;
 	/// oggetto che riallinea il mezzo
-	//allineamento AL;
+	allineamento AL;
 
 	/// disabilita le interruzioni
 	DI();
 	//pidPtr = CTRL;
 	dPtr = &DIST;
-	/*TEMPptr =  &TEMP;
+	TEMPptr =  &TEMP;
 	CIN.Aptr = &A;
 	CIN.distPTR = &DIST;
 	CIN.vel = 0.0;
@@ -110,28 +110,28 @@ int main(void) {
 	dati_a_struttura(&G, &DIST, &CIN, &COL, &TEMP, &SUR, &DATA);
 
 	/// commento per provare il merge su server remoto
-*/
+
 	/// setup di base
 	setupMCU();
 	/// imposta i parametri del PID
-	//setupPID(CTRL);
+	setupPID(CTRL);
 	/// imposta le UART
 	setupUART();
     //inizializzo l'i2c
-	//InitI2C0();
+	InitI2C0();
 	/// messaggio d'inizio
 	PRINT_WELCOME();
 	/// inizializza il giroscopio
-	//initGyro(&G, Z_AXIS);
+	initGyro(&G, Z_AXIS);
 	tick = 0;
 	/// inizializza il timer 0 e genera un tick da 10 ms
 	initTimer0(10, &G);
 	/// inizializza il timer 1
-	//initTimer1(100);
+	initTimer1(100);
 	/// inizializza il contatore della persistenza del comando
 	synSTATO.tick = 0;
 	/// inizializza il pwm
-	//pwmMotInit(&PWM);
+	pwmMotInit(&PWM);
 	// TODO: //pwmServoInit (&pwmServi);
 	/// inizializza l'adc e lo prepara a funzionare ad interruzioni.
 	initAdc(&DIST);
@@ -141,7 +141,7 @@ int main(void) {
 	//servo = (pwm *) &pwmServi;
 
 	/// iniziailizzazione del lettore encoder
-	//qei_init(&QEI);
+	qei_init(&QEI);
 
 	/// abilita le interruzioni
 	EI();
